@@ -1,0 +1,35 @@
+{
+  "name": "ezemail",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@next/font": "^13.4.19",
+    "@reduxjs/toolkit": "^1.9.6",
+    "axios": "^1.4.0",
+    "bootstrap": "^5.3.1",
+    "eslint": "8.47.0",
+    "eslint-config-next": "13.4.19",
+    "file-saver": "^2.0.5",
+    "jquery": "^3.7.0",
+    "next": "13.4.19",
+    "nodemon": "^3.0.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.8.0",
+    "react-dom": "^18.2.0",
+    "react-paginate": "^8.2.0",
+    "react-redux": "^8.1.2",
+    "sass": "^1.68.0",
+    "sheetjs-style": "^0.15.8",
+    "sweetalert2": "^11.7.29",
+    "xlsx": "^0.18.5"
+  }
+}

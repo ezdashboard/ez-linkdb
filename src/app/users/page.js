@@ -143,7 +143,7 @@ const Users=()=>{
                                     <th>Name</th>
                                     <th>Email</th>
                                     <th>Contact No.</th>
-                                    <th>Role</th>
+                                    {/* <th>Role</th> */}
                                     <th>Status</th>
                                     <th>Action</th>
                                     </tr>
@@ -157,7 +157,7 @@ const Users=()=>{
                                         <td>{users.name}</td>
                                         <td>{users.email}</td>
                                         <td>{users.contactno}</td>
-                                        <td>{users.type}</td>
+                                        {/* <td>{users.type}</td> */}
                                         <td>{users.status}</td>
                                         <td><a href={'#'} onClick={()=>{
                                     getPage('/users/'+users.id)

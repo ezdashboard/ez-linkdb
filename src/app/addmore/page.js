@@ -23,18 +23,17 @@ const Addmore=()=>{
    const [userType, setUserType] = useState('')
    const [userid, setUserid] = useState(null)
    const [inputData, setInputData] = useState({
-      leadGenBy: null,
-      leadGenFor:'',
-      leadDate:'',
-      clientName:'',
-      primaryEmail:'',
-      secondaryEmail:'',
-      websiteUrl:'',
-      contactNumber:'',
-      services:'',
+      activity:'',
       industry:'',
       country:'',
-      genratedFrom:''
+      url: '',
+      da:'',
+      spam_score:'',
+      live_links:'',
+      follow:'',
+      status:'',
+      indexing_status:''
+
    })
    const inputChangeData =(event)=> {
       setModalShow(false)
@@ -60,6 +59,8 @@ const Addmore=()=>{
    }
    const [serviceStoreData, setServiceStoreData] = useState([]);
    const [countryList, setCountryList] = useState([]);
+   const [activityList, setActivityList] = useState([]);
+
    const [msg, setFormStatus] = useState('')
    const [submitBtn, setSubmitBtn] = useState({})
    const [closeIcon, setCloseIcon] = useState(false)
@@ -108,6 +109,22 @@ const Addmore=()=>{
       .catch(err => {
          })
    }
+   const getActivityData = async () => {
+      axios.get(`${process.env.API_BASE_URL}activity.php`)
+         .then(res => {
+            const data = res.data.activityData.map((item) => {
+               return {
+                  id: item.id,
+                  title: item.title,
+                  status: item.status
+               }
+            }
+         )
+         setActivityList(data);
+      })
+      .catch(err => {
+         })
+   }
    const onSubmit = (e) => {
 
       e.preventDefault()
@@ -117,36 +134,52 @@ const Addmore=()=>{
         display: 'block',
         color: 'red'
       });
-      if(inputData && inputData.primaryEmail){
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        setIsValidEmail(emailRegex.test(inputData.primaryEmail));
+      // if(inputData && inputData.primaryEmail){
+      //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      //   setIsValidEmail(emailRegex.test(inputData.primaryEmail));
 
-      }
-      if(!inputData.leadGenFor){
-        setFormStatus("Please select Lead genrate for.")
+      // }
+      if(!inputData.activity){
+        setFormStatus("Please select Activities Type.")
         setModalShow(true)
         setMsgType('error')
-      }else if(!currDate){
-         setFormStatus("Lead date can not be blank.")
+      }else if(!inputData.industry){
+         setFormStatus("Please select Industry.")
          setModalShow(true)
-         setMsgType('error')          
-      }else if(!inputData.primaryEmail){
-        setFormStatus("Primary Email can not be blank.")
-        setModalShow(true)
-        setMsgType('error')   
-      }else if(!inputData.services){
-         setFormStatus("Please select services.")
-         setModalShow(true)
-         setMsgType('error')  
- 
+         setMsgType('error')     
       }else if(!inputData.country){
          setFormStatus("Please select country.")
          setModalShow(true)
+         setMsgType('error')                 
+      }else if(!inputData.url){
+        setFormStatus("URLs can not be blank.")
+        setModalShow(true)
+        setMsgType('error')   
+      }else if(!inputData.da){
+         setFormStatus("DA can not be blank.")
+         setModalShow(true)
+         setMsgType('error')  
+      }else if(!inputData.spam_score){
+         setFormStatus("Spam Score can not be blank.")
+         setModalShow(true)
          setMsgType('error')   
-      // }else if(!inputData.genratedFrom){
-      //    setFormStatus("Please select generated from.")
-      //    setModalShow(true)
-      //    setMsgType('error')                                                                   
+
+      }else if(!inputData.live_links){
+         setFormStatus("Live Links can not be blank.")
+         setModalShow(true)
+         setMsgType('error')   
+      }else if(!inputData.follow){
+         setFormStatus("Please select follow.")
+         setModalShow(true)
+         setMsgType('error')
+      }else if(!inputData.status){
+         setFormStatus("Please select status.")
+         setModalShow(true)
+         setMsgType('error')
+      }else if(!inputData.indexing_status){
+         setFormStatus("Please select indexing status.")
+         setModalShow(true)
+         setMsgType('error')                                                                         
       }else{
         inputData.userid = userid ? userid : '';
         inputData.updatedBy =  userid ? userid : '' 
@@ -172,13 +205,16 @@ const Addmore=()=>{
                      
                      //localStorage.clear();
                      setInputData({
-                     companyname : '',
-                     name : '',
-                     email : '',
-                     mangerId:'',
-                     contactno : '',
-                     type:'',
-                     password : ''
+                        activity:'',
+                        industry:'',
+                        country:'',
+                        url: '',
+                        da:'',
+                        spam_score:'',
+                        live_links:'',
+                        follow:'',
+                        status:'',
+                        indexing_status:''
                   });
                      setCloseIcon(true);
                      setSubmitBtn({
@@ -206,23 +242,10 @@ const Addmore=()=>{
          someDate.setDate(someDate.getDate());
          var date = someDate.toISOString().substr(0, 10);
          setCurrDate(date)
-         setInputData({
-            leadGenBy: null,
-            leadGenFor:'',
-            leadDate:date,
-            clientName:'',
-            primaryEmail:'',
-            secondaryEmail:'',
-            websiteUrl:'',
-            contactNumber:'',
-            services:'',
-            industry:'',
-            country:'',
-            genratedFrom:''
-         })
          setUserid(userid)
          getServiceData()
          getCountryData() 
+         getActivityData()
          setLoading(false) 
       }
       }, []);
@@ -264,65 +287,23 @@ const Addmore=()=>{
 { !isLoading &&                           
                              <form onSubmit={onSubmit}>
                                 <div className='row'>
-                                   {/* <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Lead Generated by</level>
-                                         <input type='text' placeholder='Lead Generated by'/>
-                                      </div>
-                                   </div> */}
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Lead Generated For*</level>
-                                         <select name="leadGenFor"  onChange={inputChangeData} >
-                                            <option value="">Select</option>
-                                            <option value="EZ">EZ</option>
-                                            <option value="SIO">SIO</option>
-                                            <option value="DAR">DAR</option>
-                                            <option value="SMCA">SMCA</option>
-                                            <option value="IPR">IPR</option>
-                                         </select>
+                                         <level>Activities Type*</level>
+                                         <select name="activity"  onChange={inputChangeData}>
+                                                <option value="">Select</option>
+                                          {activityList && activityList.length > 0 && activityList.map((actItem,c)=>{
+                                             return(
+                                                <option value={actItem.title} key={c}>{actItem.title}</option>
+                                             )
+                                          })}
+                                         </select> 
                                       </div>
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Lead Date*</level>
-                                         <input type='date' placeholder='Lead Date' onChange={inputChangeData} name="leadDate" value={currDate}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Client Name</level>
-                                         <input type='text' placeholder='Client Name' name="clientName" onChange={inputChangeData} value={inputData.clientName}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Email ID*(Primary)</level>
-                                         <input type='text' placeholder='Primary Email ID*' name="primaryEmail" onChange={inputChangeData} value={inputData.primaryEmail}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Email ID(Secondary)</level>
-                                         <input type='text' placeholder='Secondary Email ID' name="secondaryEmail" onChange={inputChangeData} value={inputData.secondaryEmail}/>
-                                      </div>
-                                   </div>                                   
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Website URL</level>
-                                         <input type='text' placeholder='Website URL' name="websiteUrl" onChange={inputChangeData} value={inputData.websiteUrl}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Contact Number</level>
-                                         <input type='text' placeholder='Contact Number' name="contactNumber" onChange={inputChangeData} value={inputData.contactNumber}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Services*</level>
-                                         <select name="services"  onChange={inputChangeData} >
+                                         <level>Industry*</level>
+                                         <select name="industry"  onChange={inputChangeData} >
                                          <option value="">Select</option>
                                           {serviceStoreData && serviceStoreData.length > 0 && serviceStoreData.map((serv,s)=>{
                                              return(
@@ -331,12 +312,6 @@ const Addmore=()=>{
                                           })}
                                          </select>   
                                        </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Industry</level>
-                                         <input type='text' placeholder='Industry' name="industry" onChange={inputChangeData} value={inputData.industry}/>
-                                      </div>
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
@@ -353,14 +328,59 @@ const Addmore=()=>{
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Generated from Domain/General Ids</level>
-                                         <select name="genratedFrom"  onChange={inputChangeData} >
+                                         <level>URLs *</level>
+                                         <input type='text' placeholder='URLs' onChange={inputChangeData} name="url" value={inputData.url}/>
+                                      </div>
+                                   </div>
+                                   <div className='col-md-6'>
+                                      <div className='form-group'>
+                                         <level>DA*</level>
+                                         <input type='text' placeholder='DA' name="da" onChange={inputChangeData} value={inputData.da}/>
+                                      </div>
+                                   </div>
+                                   <div className='col-md-6'>
+                                      <div className='form-group'>
+                                         <level>Spam Score*</level>
+                                         <input type='text' placeholder='Spam Score*' name="spam_score" onChange={inputChangeData} value={inputData.spam_score}/>
+                                      </div>
+                                   </div>
+                                   <div className='col-md-6'>
+                                      <div className='form-group'>
+                                         <level>Live Links*</level>
+                                         <input type='text' placeholder='Live Links' name="live_links" onChange={inputChangeData} value={inputData.live_links}/>
+                                      </div>
+                                   </div>                                   
+                                  
+                                   <div className='col-md-6'>
+                                      <div className='form-group'>
+                                         <level>Follow*</level>
+                                         <select name="follow"  onChange={inputChangeData} >
                                             <option value="">Select</option>
-                                            <option value="Domain">Domain</option>
-                                            <option value="General Ids">General Ids</option>
+                                            <option value="Dofollow">Dofollow</option>
+                                            <option value="Nofollow">Nofollow</option>
                                          </select>
                                       </div>
                                    </div>
+                                   <div className='col-md-6'>
+                                      <div className='form-group'>
+                                         <level>Status*</level>
+                                         <select name="status"  onChange={inputChangeData} >
+                                            <option value="">Select</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Not Working">Not Working</option>
+                                         </select>
+                                      </div>
+                                   </div>
+                                   <div className='col-md-6'>
+                                      <div className='form-group'>
+                                         <level>Indexing Status*</level>
+                                         <select name="indexing_status"  onChange={inputChangeData} >
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                         </select>
+                                      </div>
+                                   </div>                                   
                                    <div className='col-md-6'>
                                       <div className='form-group'>
                                          <button type="submit">Save</button>

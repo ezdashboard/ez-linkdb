@@ -102,11 +102,11 @@ const onSubmit = (e) => {
       setCloseIcon(true);  
       setModalShow(true)
       setMsgType('error') 
-   }else if(!inputData.type){
-      setFormStatus("Please select user role.")
-      setCloseIcon(true); 
-      setModalShow(true)
-      setMsgType('error')                               
+   // }else if(!inputData.type){
+   //    setFormStatus("Please select user role.")
+   //    setCloseIcon(true); 
+   //    setModalShow(true)
+   //    setMsgType('error')                               
    }else{
       setLoading(true)
      inputData.userid = profileData && profileData.userid ? profileData.userid : '';
@@ -239,7 +239,7 @@ const onSubmit = (e) => {
                                          <input type='password' placeholder='Confirm Password*'/>
                                       </div>
                                    </div> */}
-                                   <div className='col-md-6'>
+                                   <div className='col-md-6 d-none'>
                                       <div className='form-group'>
                                          <level>Role*</level>
                                          <select onChange={inputChangeData} name="type">
@@ -247,7 +247,7 @@ const onSubmit = (e) => {
                                             <option value="User">User</option>
                                             <option value="Manager">Manager</option>
                                          </select>
-                                         {/* <input type='text' placeholder='Role*'/> */}
+                                         <input type='text' placeholder='Role*'/>
                                       </div>
                                    </div>
                                    <div className='col-md-6'>

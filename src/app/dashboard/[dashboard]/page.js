@@ -22,13 +22,20 @@ const EditUser = ({params})=>{
     const [showManager, setShowManager] = useState(false)
     const [modalShow, setModalShow] = useState(false);
     const [msgType, setMsgType] = useState('')
+    const [activityList, setActivityList] = useState([]);
     const [inputData, setInputData] = useState({
-       type : '',
-       name : '',
-       email : '',
-       type : '',
-       updatedBy : '',
-       userid :''
+      id: '',
+      activity: '',
+      create_at: '',
+      da:  '',
+      follow: '',
+      indexing_status: '',
+      industry:'',
+      live_links:'',
+      spam_score: '',
+      status:'',
+      industry:'',
+      url:''
    });
    const getServiceData = async () => {
     axios.get(`${process.env.API_BASE_URL}services.php`)
@@ -84,87 +91,110 @@ const EditUser = ({params})=>{
      $(".app__offcanvas-overlay").removeClass("overlay-open");
  }
  const onSubmit = (e) => {
-    e.preventDefault()
-    //setLoading(true);
-    setSubmitBtn({
-      padding: '1rem 0rem',
-      display: 'block',
-      color: 'red'
-    });
-    if(inputData && inputData.primaryEmail){
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      setIsValidEmail(emailRegex.test(inputData.primaryEmail));
 
-    }
-    if(!inputData.leadGenFor){
-      setFormStatus("Please select Lead genrate for.")
+   e.preventDefault()
+   //setLoading(true);
+   setSubmitBtn({
+     padding: '1rem 0rem',
+     display: 'block',
+     color: 'red'
+   });
+   // if(inputData && inputData.primaryEmail){
+   //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   //   setIsValidEmail(emailRegex.test(inputData.primaryEmail));
+
+   // }
+   if(!inputData.activity){
+     setFormStatus("Please select Activities Type.")
+     setModalShow(true)
+     setMsgType('error')
+   }else if(!inputData.industry){
+      setFormStatus("Please select Industry.")
       setModalShow(true)
-      setMsgType('error')
-    }else if(!inputData.leadDate){
-       setFormStatus("Lead date can not be blank.")
-       setModalShow(true)
-       setMsgType('error')          
-    }else if(!inputData.primaryEmail){
-      setFormStatus("Primary Email can not be blank.")
+      setMsgType('error')     
+   }else if(!inputData.country){
+      setFormStatus("Please select country.")
+      setModalShow(true)
+      setMsgType('error')                 
+   }else if(!inputData.url){
+     setFormStatus("URLs can not be blank.")
+     setModalShow(true)
+     setMsgType('error')   
+   }else if(!inputData.da){
+      setFormStatus("DA can not be blank.")
+      setModalShow(true)
+      setMsgType('error')  
+   }else if(!inputData.spam_score){
+      setFormStatus("Spam Score can not be blank.")
       setModalShow(true)
       setMsgType('error')   
-    }else if(!inputData.services){
-       setFormStatus("Please select services.")
-       setModalShow(true)
-       setMsgType('error')  
 
-    }else if(!inputData.country){
-       setFormStatus("Please select country.")
-       setModalShow(true)
-       setMsgType('error')   
-    }else if(!inputData.genratedFrom){
-       setFormStatus("Please select generated from.")
-       setModalShow(true)
-       setMsgType('error')                                                                   
-    }else{
-      inputData.userid = userid ? userid : '';
-      inputData.updatedBy =  userid ? userid : '' 
-      axios.post(`${process.env.API_BASE_URL}updateData.php`,inputData,{
-        headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-       .then(res => {
-          const data = res.data;
-          if(res &&  res.data && res.data.error && res.data.error.length > 0){
-             setFormStatus(res.data.error);
-             setModalShow(true)
-             setMsgType('error') 
-             setCloseIcon(true);
-          }else if(res &&  res.data && res.data.msg && res.data.msg.length > 0){
-                   //Router.push('/thankyou')
-                   setFormStatus("Updated successfully.");
-                   setModalShow(true)
-                   setMsgType('success') 
-                   //localStorage.clear();
-               //     setInputData({
-               //     companyname : '',
-               //     name : '',
-               //     email : '',
-               //     mangerId:'',
-               //     contactno : '',
-               //     type:'',
-               //     password : ''
-               //  });
-                   setCloseIcon(true);
-                   setSubmitBtn({
-                   padding: '1rem 0rem',
-                   display: 'block',
-                   color: '#46c737'
-                   })
-                }
- 
-    })
-      .catch(err => {
-       })
-    }
-    setLoading(false)
-  } 
+   }else if(!inputData.live_links){
+      setFormStatus("Live Links can not be blank.")
+      setModalShow(true)
+      setMsgType('error')   
+   }else if(!inputData.follow){
+      setFormStatus("Please select follow.")
+      setModalShow(true)
+      setMsgType('error')
+   }else if(!inputData.status){
+      setFormStatus("Please select status.")
+      setModalShow(true)
+      setMsgType('error')
+   }else if(!inputData.indexing_status){
+      setFormStatus("Please select indexing status.")
+      setModalShow(true)
+      setMsgType('error')                                                                         
+   }else{
+     inputData.userid = userid ? userid : '';
+     inputData.updatedBy =  userid ? userid : '' 
+     axios.post(`${process.env.API_BASE_URL}updateData.php`,inputData,{
+       headers: {
+       'Content-Type': 'multipart/form-data'
+     }
+   })
+      .then(res => {
+         const data = res.data;
+         if(res &&  res.data && res.data.error && res.data.error.length > 0){
+            setFormStatus(res.data.error);
+            setModalShow(true)
+            setMsgType('error') 
+            setCloseIcon(true);
+         }else if(res &&  res.data && res.data.msg && res.data.msg.length > 0){
+                  //Router.push('/thankyou')
+                  setFormStatus("Data updated successfully.");
+                  setModalShow(true)
+                  setMsgType('success') 
+                 // alert("Data updated successfully.");
+                  //setTimeout(router.push('/dashboard'), 30000);
+                  
+                  //localStorage.clear();
+               //    setInputData({
+               //       activity:'',
+               //       industry:'',
+               //       country:'',
+               //       url: '',
+               //       da:'',
+               //       spam_score:'',
+               //       live_links:'',
+               //       follow:'',
+               //       status:'',
+               //       indexing_status:''
+               // });
+                  setCloseIcon(true);
+                  setSubmitBtn({
+                  padding: '1rem 0rem',
+                  display: 'block',
+                  color: '#46c737'
+                  })
+               }
+
+   })
+     .catch(err => {
+      })
+   }
+   setLoading(false)
+ } 
   const getData = ()=>{
     console.log('params',params)
     if(params && params.dashboard){
@@ -175,26 +205,24 @@ const EditUser = ({params})=>{
                 },
               };
         setLoading(true);
-       axios.get(`${process.env.API_BASE_URL}getdata.php?userid=${params.dashboard}`,config)
+       axios.get(`${process.env.API_BASE_URL}getdata.php?id=${params.dashboard}`,config)
        .then(res => {
        // setLearningData(data);
        setInputData({
-        clientName : res.data[0].clientName,
-        contactNumber : res.data[0].contactNumber,
-        country : res.data[0].country,
-        genratedFrom : res.data[0].genratedFrom,
-        id : res.data[0].id,
-        industry : res.data[0].industry,
-        leadDate : res.data[0].leadDate,
-        leadGenFor : res.data[0].leadGenFor,
-        primaryEmail : res.data[0].primaryEmail,
-        secondaryEmail : res.data[0].secondaryEmail,
-        services : res.data[0].services,
-        status : res.data[0].status,
-        service_name: res.data[0].service_name,
-        // userid : res.data[0].clientName,
-        websiteUrl :res.data[0].websiteUrl,
-        userid : params.dashboard
+
+         id: res.data[0].id,
+         activity: res.data[0].activity,
+         create_at: res.data[0].create_at,
+         da:  res.data[0].da,
+         follow: res.data[0].follow,
+         indexing_status: res.data[0].indexing_status,
+         country:res.data[0].country,
+         industry:res.data[0].industry,
+         live_links:res.data[0].live_links,
+         spam_score: res.data[0].spam_score,
+         status:res.data[0].status,
+         industry:res.data[0].industry,
+         url:res.data[0].url
        })
        setLoading(false);
     })
@@ -210,6 +238,22 @@ const EditUser = ({params})=>{
     }
     
  }
+ const getActivityData = async () => {
+   axios.get(`${process.env.API_BASE_URL}activity.php`)
+      .then(res => {
+         const data = res.data.activityData.map((item) => {
+            return {
+               id: item.id,
+               title: item.title,
+               status: item.status
+            }
+         }
+      )
+      setActivityList(data);
+   })
+   .catch(err => {
+      })
+}
  const [userid,setUserId] = useState(null)
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -221,6 +265,7 @@ const EditUser = ({params})=>{
     setMsgType('')
     getServiceData()
     getCountryData() 
+    getActivityData()
     }, []);
     return(
         <>
@@ -253,114 +298,112 @@ const EditUser = ({params})=>{
                         <div className='col-md-12'>
                          <div className='add-more-form'>
                         { !isLoading &&                           
-                             <form onSubmit={onSubmit}>
-                                <div className='row'>
-                                   {/* <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Lead Generated by</level>
-                                         <input type='text' placeholder='Lead Generated by'/>
-                                      </div>
-                                   </div> */}
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Lead Generated For*</level>
-                                         <select name="leadGenFor"  onChange={inputChangeData} >
-                                            <option value={inputData.leadGenFor}>{inputData.leadGenFor}</option>
-                                            <option value="EZ">EZ</option>
-                                            <option value="SIO">SIO</option>
-                                            <option value="DAR">DAR</option>
-                                            <option value="SMCA">SMCA</option>
-                                            <option value="IPR">IPR</option>
-                                         </select>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Lead Date*</level>
-                                         <input type='date' placeholder='Lead Date' onChange={inputChangeData} name="leadDate" value={inputData.leadDate}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Client Name</level>
-                                         <input type='text' placeholder='Client Name' name="clientName" onChange={inputChangeData} value={inputData.clientName}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Email ID*(Primary)</level>
-                                         <input type='text' placeholder='Primary Email ID*' name="primaryEmail" onChange={inputChangeData} value={inputData.primaryEmail}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Email ID(Secondary)</level>
-                                         <input type='text' placeholder='Secondary Email ID' name="secondaryEmail" onChange={inputChangeData} value={inputData.secondaryEmail}/>
-                                      </div>
-                                   </div>                                   
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Website URL</level>
-                                         <input type='text' placeholder='Website URL' name="websiteUrl" onChange={inputChangeData} value={inputData.websiteUrl}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Contact Number</level>
-                                         <input type='text' placeholder='Contact Number' name="contactNumber" onChange={inputChangeData} value={inputData.contactNumber}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Services*</level>
-                                         <select name="services"  onChange={inputChangeData} >
-                                         
-                                         <option value={inputData.services}>{inputData.service_name}</option>
-                                          {serviceStoreData && serviceStoreData.length > 0 && serviceStoreData.map((serv,s)=>{
+                           <form onSubmit={onSubmit}>
+                              <div className='row'>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>Activities Type*</level>
+                                       <select name="activity"  onChange={inputChangeData} value={inputData.activity}  >
+                                          <option value="">Select</option>
+                                          {activityList && activityList.length > 0 && activityList.map((actItem,c)=>{
                                              return(
-                                                <option value={serv.id} key={s}>{serv.name}</option>
+                                                <option value={actItem.title} key={c}>{actItem.title}</option>
                                              )
                                           })}
-                                         </select>   
+                                       </select> 
+                                    </div>
+                                 </div>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>Industry*</level>
+                                       <select name="industry"  onChange={inputChangeData} value={inputData.industry}>
+                                       <option value="">Select</option>
+                                          {serviceStoreData && serviceStoreData.length > 0 && serviceStoreData.map((serv,s)=>{
+                                             return(
+                                                <option value={serv.name} key={s}>{serv.name}</option>
+                                             )
+                                          })}
+                                       </select>   
                                        </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Industry</level>
-                                         <input type='text' placeholder='Industry' name="industry" onChange={inputChangeData} value={inputData.industry}/>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Country*</level>
-                                         <select name="country"  onChange={inputChangeData}>
-                                                <option value={inputData.country}>{inputData.country}</option>
+                                 </div>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>Country*</level>
+                                       <select name="country"  onChange={inputChangeData} value={inputData.country}>
+                                          <option value="">Select</option>
                                           {countryList && countryList.length > 0 && countryList.map((coun,c)=>{
                                              return(
                                                 <option value={coun.name} key={c}>{coun.name}</option>
                                              )
                                           })}
-                                         </select> 
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <level>Generated from Domain/General Ids</level>
-                                         <select name="genratedFrom"  onChange={inputChangeData} >
-                                            <option value={inputData.genratedFrom}>{inputData.genratedFrom}</option>
-                                            <option value="Domain">Domain</option>
-                                            <option value="General Ids">General Ids</option>
-                                         </select>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-6'>
-                                      <div className='form-group'>
-                                         <button type="submit">Update</button>
-                                      </div>
-                                   </div>
-                                </div>
-                             </form>
-                             }
+                                       </select> 
+                                    </div>
+                                 </div>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>URLs *</level>
+                                       <input type='text' placeholder='URLs' onChange={inputChangeData} name="url" value={inputData.url}/>
+                                    </div>
+                                 </div>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>DA*</level>
+                                       <input type='text' placeholder='DA' name="da" onChange={inputChangeData} value={inputData.da}/>
+                                    </div>
+                                 </div>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>Spam Score*</level>
+                                       <input type='text' placeholder='Spam Score*' name="spam_score" onChange={inputChangeData} value={inputData.spam_score}/>
+                                    </div>
+                                 </div>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>Live Links*</level>
+                                       <input type='text' placeholder='Live Links' name="live_links" onChange={inputChangeData} value={inputData.live_links}/>
+                                    </div>
+                                 </div>                                   
+                                 
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>Follow*</level>
+                                       <select name="follow"  onChange={inputChangeData} value={inputData.follow}>
+                                          <option value="">Select</option>
+                                          <option value="Dofollow">Dofollow</option>
+                                          <option value="Nofollow">Nofollow</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>Status*</level>
+                                       <select name="status"  onChange={inputChangeData} >
+                                          <option value="">Select</option>
+                                          <option value={inputData.status} selected>{inputData.status}</option>
+                                          <option value="Active">Active</option>
+                                          <option value="Not Working">Not Working</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <level>Indexing Status*</level>
+                                       <select name="indexing_status"  onChange={inputChangeData} >
+                                          <option value="">Select</option>
+                                          <option value={inputData.indexing_status} selected>{inputData.indexing_status}</option>
+                                          <option value="Yes">Yes</option>
+                                          <option value="No">No</option>
+                                       </select>
+                                    </div>
+                                 </div>                                   
+                                 <div className='col-md-6'>
+                                    <div className='form-group'>
+                                       <button type="submit">Update</button>
+                                    </div>
+                                 </div>
+                              </div>
+                           </form>
+                        }
                              {isLoading && <Loader />}
                          </div>
                       </div>

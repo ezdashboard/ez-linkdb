@@ -197,10 +197,10 @@ const Addmore=()=>{
                setCloseIcon(true);
             }else if(res &&  res.data && res.data.msg && res.data.msg.length > 0){
                      //Router.push('/thankyou')
-                     setFormStatus("User added successfully.");
+                     setFormStatus("Data added successfully.");
                      setModalShow(true)
                      setMsgType('success') 
-                     alert("User added successfully.");
+                     alert("Data added successfully.");
                      //setTimeout(router.push('/dashboard'), 30000);
                      
                      //localStorage.clear();
@@ -307,7 +307,7 @@ const Addmore=()=>{
                                          <option value="">Select</option>
                                           {serviceStoreData && serviceStoreData.length > 0 && serviceStoreData.map((serv,s)=>{
                                              return(
-                                                <option value={serv.id} key={s}>{serv.name}</option>
+                                                <option value={serv.name} key={s}>{serv.name}</option>
                                              )
                                           })}
                                          </select>   

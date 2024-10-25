@@ -76,7 +76,6 @@ const Dashboard=()=>{
         .then(res => {
             if(res && res.data && res.data.status){
               let idn = 0;
-              // getLeadsData(userid,'normal')
               // setDelt()
               alert(res.data.msg);
               // setMsg(res.data.msg);
@@ -134,13 +133,15 @@ const Dashboard=()=>{
 
 
     const [leadStoreData, setLeadStoreData] = useState([]);
-    
+    const [serviceStoreData, setServiceStoreData] = useState([]);
+
     const [inputData, setInputData] =useState({
         search:''
     })
     const [searData, setSearData] =useState({
-      startDate:'',
-      endDate:'',
+      activity:'',
+      industry:'',
+      follow:''
     })
     const [msg, setMsg] = useState('');
     const [msgType, setMsgType] = useState('')
@@ -201,21 +202,18 @@ const Dashboard=()=>{
                 const data = res.data.leadRecordsData.map((item) => {
                  idn = idn+1;
                 return {
-                  id: idn,
-                  clientName: item.clientName,
+                  id: item.id,
+                  activity: item.activity,
                   create_at: item.create_at,
-                  leadDate:  item.leadDate,
-                  leadGenFor: item.leadGenFor,
-                  primaryEmail: item.primaryEmail,
-                  secondaryEmail:item.secondaryEmail,
-                  websiteUrl:item.websiteUrl,
-                  emailStatus: item.emailStatus,
-                  contactNumber:item.contactNumber,
+                  da:  item.da,
+                  follow: item.follow,
+                  indexing_status: item.indexing_status,
                   industry:item.industry,
-                  country:item.country,
-                  genratedFrom:item.genratedFrom,
-                  leadGenBy: item.leadGenBy,
-                  serviceName: item.serviceName
+                  live_links:item.live_links,
+                  spam_score: item.spam_score,
+                  status:item.status,
+                  industry:item.industry,
+                  url:item.url
                 }
             }
           )
@@ -251,14 +249,14 @@ const Dashboard=()=>{
         }
       }
     }
-    const getLeadsData = async (userid, type) => {
+    const getLeadsData = async (type) => {
       setModalShow(false)
         //setMsg("");
-        if(userid){
+       
             try {
               let apiDash = '';
-              if(type && type=='search' && inputData.search){
-                apiDash = `${process.env.API_BASE_URL}leads.php?limit=${limitp}&ser=${inputData.search}`;
+              if(type && type=='search' ){
+                apiDash = `${process.env.API_BASE_URL}leads.php?limit=${limitp}&activity=${searData.activity}&industry=${searData.industry}&follow=${searData.follow}`;
               }else{
                 apiDash = `${process.env.API_BASE_URL}leads.php?page=${currentPage}&limit=${limitp}`;
               }
@@ -275,20 +273,18 @@ const Dashboard=()=>{
                 const data = res.data.leadRecordsData.map((item) => {
                   return {
                     id: item.id,
-                    clientName: item.clientName,
+                    activity: item.activity,
                     create_at: item.create_at,
-                    leadDate:  item.leadDate,
-                    leadGenFor: item.leadGenFor,
-                    primaryEmail: item.primaryEmail,
-                    secondaryEmail:item.secondaryEmail,
-                    websiteUrl:item.websiteUrl,
-                    emailStatus: item.emailStatus,
-                    contactNumber:item.contactNumber,
+                    da:  item.da,
+                    follow: item.follow,
+                    indexing_status: item.indexing_status,
                     industry:item.industry,
-                    country:item.country,
-                    genratedFrom:item.genratedFrom,
-                    leadGenBy: item.leadGenBy,
-                    serviceName: item.serviceName
+                    live_links:item.live_links,
+                    spam_score: item.spam_score,
+                    status:item.status,
+                    industry:item.industry,
+                    url:item.url
+                    
                   }
               }
             )
@@ -315,8 +311,42 @@ const Dashboard=()=>{
             }
             // console.error(error);
           }
-        }
+        
      }
+     const [activityList, setActivityList] = useState([]);
+
+     const getActivityData = async () => {
+      axios.get(`${process.env.API_BASE_URL}activity.php`)
+         .then(res => {
+            const data = res.data.activityData.map((item) => {
+               return {
+                  id: item.id,
+                  title: item.title,
+                  status: item.status
+               }
+            }
+         )
+         setActivityList(data);
+      })
+      .catch(err => {
+         })
+   }
+   const getServiceData = async () => {
+    axios.get(`${process.env.API_BASE_URL}services.php`)
+       .then(res => {
+          const data = res.data.serviceData.map((item) => {
+             return {
+                id: item.id,
+                name: item.service_name,
+                status: item.status
+             }
+          }
+       )
+       setServiceStoreData(data);
+    })
+    .catch(err => {
+       })
+ } 
      const statusUpdate = (status)=>{
         let data = {
             status: status,
@@ -355,7 +385,7 @@ const Dashboard=()=>{
                          setModalShow(true)
                          setMsgType('success') 
                          //let storrLead1 = leadStoreData.filter(item => item.id == parseInt(value));
-                         getLeadsData(userId,'normal')
+                         getLeadsData('normal')
                          setCloseIcon(true);
                          setSubmitBtn({
                          padding: '1rem 0rem',
@@ -381,7 +411,9 @@ const Dashboard=()=>{
                 // setTimeout(function() {
                     
                 // }, 10000);
-                getLeadsData(userid,'normal')
+                getLeadsData('normal')
+                getActivityData()
+                getServiceData()
                }
                if(localType){
                 setUserType(localType)
@@ -432,7 +464,7 @@ const Dashboard=()=>{
                                
                                 <input type="text" placeholder="Email"  onChange={inputChangeData} name="search" value={inputData.search}/>
                                 <button type="button" onClick={()=>{
-                                    getLeadsData(userId,'search')
+                                    getLeadsData('search')
                                 }}>Search</button>
                                 </form>
                                 { userType &&   
@@ -444,22 +476,60 @@ const Dashboard=()=>{
                               </div>}
                               </div>
                               { userType && userType=='admin' &&
-                            <div className='col-md-12 d-none'>
-                              <div className="ser">
-                              <div className='ser-wrap'>
-                                <form>
-                                <strong>Search:</strong><input type='date' name="startDate" onChange={inputSearchData} value={searData.startDate}/>
-                                  <input type='date' name="endDate" onChange={inputSearchData} value={searData.endDate}/>
-                                  {/* <div onClick={getSearchData}/>Search<div/> */}
-                                  {/* <button type='button' onClick={()=>{
-                                                                getSearchData()
-                                                            }}>Search</button> */}
-                                </form>
-                                <button onClick={getSearchData}> Download Excel</button>
+                            <div className='col-md-12'>
+                              <div className="">
+                              <div className=''>
+                                
+                                <strong>Search:</strong>
+                                <div className='row'>
+                                   <div className='col-md-3'>
+                                      <div className='form-group'>
+                                        <level>Activities Type*</level>
+                                        <select name="activity"  onChange={inputSearchData} className='form-control'>
+                                            <option value="">Select</option>
+                                              {activityList && activityList.length > 0 && activityList.map((actItem,c)=>{
+                                                return(
+                                                    <option value={actItem.title} key={c}>{actItem.title}</option>
+                                                )
+                                              })}
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className='col-md-3'>
+                                      <div className='form-group'>
+                                         <level>Industry*</level>
+                                         <select name="industry"  onChange={inputSearchData} className='form-control'>
+                                          <option value="">Select</option>
+                                            {serviceStoreData && serviceStoreData.length > 0 && serviceStoreData.map((serv,s)=>{
+                                              return(
+                                                  <option value={serv.name} key={s}>{serv.name}</option>
+                                              )
+                                            })}
+                                         </select>   
+                                      </div>
+                                    </div>
+                                   <div className='col-md-3'>
+                                      <div className='form-group'>
+                                         <level>Follow*</level>
+                                         <select name="follow"  onChange={inputSearchData} className='form-control'>
+                                            <option value="">Select</option>
+                                            <option value="Dofollow">Dofollow</option>
+                                            <option value="Nofollow">Nofollow</option>
+                                         </select>
+                                      </div>
+                                   </div>
+                                   <div className='col-md-3'>
+                                      <div className='form-group two-btn' style={{marginTop:'20px'}}>
+                                         <button type="button" onClick={()=>getLeadsData('search')} className='btn btn-primary'>Search</button>
+                                      </div>
+                                   </div>
+                                </div>
+                               
+                                <button onClick={getSearchData} className="d-none"> Download Excel</button>
                                 {/* {sData && sData.length > 0 &&
                                   <ExcelDownloadButton data={sData} fileName="records"/>} */}
                               </div>
-                              <div className='two-btn'>
+                              <div className='two-btn d-none'>
                                 <button type='button'  className = "btn btn-primary" onClick={()=>{
                                                                 statusUpdate('2')
                                                             }}>Disable</button>
@@ -476,8 +546,8 @@ const Dashboard=()=>{
                                <Table striped bordered hover >
                                 <thead>
                                     <tr>
-                                    { userType && userType=='admin' &&  <th>
-                                    </th>}
+                                    {/* { userType && userType=='admin' && 
+                                     <th></th>} */}
                                     <th>Activities</th>
                                     <th>Industry</th>
                                     <th>URLs</th>
@@ -485,10 +555,12 @@ const Dashboard=()=>{
                                     <th>Spam Score</th>
                                     <th>Live Links</th>
                                     <th>Follow</th>
-                                    <th>Status</th>
                                    
-                                    {    userType && userType=='admin' &&
-                                      <th>Action</th>
+                                    {   userType && userType=='admin' &&
+                                     <>
+                                     <th>Status</th>
+                                     <th>Action</th>
+                                   </> 
                                     }
                                     </tr>
                                 </thead>
@@ -498,25 +570,29 @@ const Dashboard=()=>{
                                     {leadStoreData && leadStoreData.length > 0 && leadStoreData.map((lead, l)=>{
                                         return(
                                             <tr key={l} className={lead.emailStatus == 2 ? 'table-danger':'table-light'}>
-                                          { userType && userType=='admin' &&
+                                          {/* { userType && userType=='admin' &&
                                             <td><input type="checkbox" onChange={handleChange} value={lead.id}/></td>
-                                          }
-                                            <td>{lead.leadGenBy}</td>
-                                            <td>{lead.leadGenFor}</td>
-                                            <td>{lead.leadDate}</td>
-                                            <td>{lead.clientName}</td>
-                                            <td>{lead.primaryEmail}</td>
-                                            <td>{lead.secondaryEmail}</td>
-                                            <td>{lead.websiteUrl}</td>
-                                            <td>{lead.contactNumber}</td>
+                                          } */}
+                                            <td>{lead.activity}</td>
+                                            <td>{lead.industry}</td>
+                                            <td>{lead.url}</td>
+                                            <td>{lead.da}</td>
+                                            <td>{lead.spam_score}</td>
+                                            <td>{lead.live_links}</td>
+                                            <td>{lead.follow}</td>
+                                            
                                             
                                          { userType && userType=='admin' &&
+                                         <>
+                                          <td>{lead.status}</td>
                                             <td><a href={'#'} onClick={()=>{
                                     getPage('/dashboard/'+lead.id)
                                 }}><FontAwesomeIcon icon={faPenToSquare} /></a> 
                               <a href={'#'} onClick={()=>{
                                 openModal(lead.id)
-                            }}><FontAwesomeIcon icon={faTrashCan} /></a></td> }                                   
+                            }}><FontAwesomeIcon icon={faTrashCan} /></a></td>
+                                         </>
+                                           }                                   
                                         </tr>
                                         )
                                     })}

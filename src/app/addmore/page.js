@@ -202,7 +202,8 @@ const Addmore=()=>{
                      setMsgType('success') 
                      alert("Data added successfully.");
                      //setTimeout(router.push('/dashboard'), 30000);
-                     
+                     router.push('/dashboard')
+
                      //localStorage.clear();
                      setInputData({
                         activity:'',

@@ -141,7 +141,8 @@ const Dashboard=()=>{
     const [searData, setSearData] =useState({
       activity:'',
       industry:'',
-      follow:''
+      follow:'',
+      sorting:''
     })
     const [msg, setMsg] = useState('');
     const [msgType, setMsgType] = useState('')
@@ -256,7 +257,7 @@ const Dashboard=()=>{
             try {
               let apiDash = '';
               if(type && type=='search' ){
-                apiDash = `${process.env.API_BASE_URL}leads.php?limit=${limitp}&activity=${searData.activity}&industry=${searData.industry}&follow=${searData.follow}`;
+                apiDash = `${process.env.API_BASE_URL}leads.php?limit=${limitp}&activity=${searData.activity}&industry=${searData.industry}&follow=${searData.follow}&sort=${searData.sorting}`;
               }else{
                 apiDash = `${process.env.API_BASE_URL}leads.php?page=${currentPage}&limit=${limitp}`;
               }
@@ -295,6 +296,10 @@ const Dashboard=()=>{
             setLeadStoreData(data);
             setMsg('')
             }else if(res.data.msg && res.data.leadRecordsData.length==0){
+                setLeadStoreData([]);
+                setTotPage(0)
+                setMsg(res.data.msg)
+            }else if(res.data.msg && res.data.msg=='No Data Found'){
                 setLeadStoreData([]);
                 setTotPage(0)
                 setMsg(res.data.msg)
@@ -467,7 +472,7 @@ const Dashboard=()=>{
                                     getLeadsData('search')
                                 }}>Search</button>
                                 </form>
-                                { userType &&   
+                                { userType && userType=='admin' &&  
                                 <div className='add-more'>
                                  <a href='#' onClick={()=>{
                                     getPage('/addmore')
@@ -475,16 +480,16 @@ const Dashboard=()=>{
                                 
                               </div>}
                               </div>
-                              { userType && userType=='admin' &&
+                              { 
                             <div className='col-md-12'>
                               <div className="">
                               <div className=''>
                                 
                                 <strong>Search:</strong>
                                 <div className='row'>
-                                   <div className='col-md-3'>
+                                   <div className='col-md-2'>
                                       <div className='form-group'>
-                                        <level>Activities Type*</level>
+                                        <level>Activities Type</level>
                                         <select name="activity"  onChange={inputSearchData} className='form-control'>
                                             <option value="">Select</option>
                                               {activityList && activityList.length > 0 && activityList.map((actItem,c)=>{
@@ -495,9 +500,9 @@ const Dashboard=()=>{
                                         </select>
                                       </div>
                                     </div>
-                                    <div className='col-md-3'>
+                                    <div className='col-md-2'>
                                       <div className='form-group'>
-                                         <level>Industry*</level>
+                                         <level>Industry</level>
                                          <select name="industry"  onChange={inputSearchData} className='form-control'>
                                           <option value="">Select</option>
                                             {serviceStoreData && serviceStoreData.length > 0 && serviceStoreData.map((serv,s)=>{
@@ -508,9 +513,9 @@ const Dashboard=()=>{
                                          </select>   
                                       </div>
                                     </div>
-                                   <div className='col-md-3'>
+                                   <div className='col-md-2'>
                                       <div className='form-group'>
-                                         <level>Follow*</level>
+                                         <level>Follow</level>
                                          <select name="follow"  onChange={inputSearchData} className='form-control'>
                                             <option value="">Select</option>
                                             <option value="Dofollow">Dofollow</option>
@@ -518,7 +523,23 @@ const Dashboard=()=>{
                                          </select>
                                       </div>
                                    </div>
-                                   <div className='col-md-3'>
+                                   <div className='col-md-2'>
+                                      <div className='form-group'>
+                                         <level>Sorting</level>
+                                         <select name="sorting"  onChange={inputSearchData} className='form-control'>
+                                            <option value="">Select</option>
+                                            <option value="1">Industry By Asc</option>
+                                            <option value="2">Industry By Desc</option>
+                                            <option value="3">DA By Asc</option>
+                                            <option value="4">DA By Desc</option>
+                                            <option value="5">Scam Score By Asc</option>
+                                            <option value="6">Scam Score By Desc</option>
+                                            <option value="7">Follow By Asc</option>
+                                            <option value="8">Follow By Desc</option>
+                                         </select>
+                                      </div>
+                                   </div>
+                                   <div className='col-md-4'>
                                       <div className='form-group two-btn' style={{marginTop:'20px'}}>
                                          <button type="button" onClick={()=>getLeadsData('search')} className='btn btn-primary'>Search</button>
                                       </div>

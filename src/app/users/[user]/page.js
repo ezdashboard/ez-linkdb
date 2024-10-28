@@ -20,10 +20,8 @@ const EditUser = ({params})=>{
     const [modalShow, setModalShow] = useState(false);
     const [msgType, setMsgType] = useState('')
     const [inputData, setInputData] = useState({
-       type : '',
        name : '',
        email : '',
-       type : '',
        updatedBy : '',
        userid :''
    });
@@ -75,12 +73,7 @@ const EditUser = ({params})=>{
       setCloseIcon(true);  
       setModalShow(true)
       setMsgType('error')
-
-    }else if(!inputData.type){
-       setFormStatus("Please select user role.")
-       setCloseIcon(true); 
-       setModalShow(true)
-       setMsgType('error')                               
+                             
     }else{
         setLoading(true);
       inputData.userid = params && params.user ? params.user : '';
@@ -108,6 +101,7 @@ const EditUser = ({params})=>{
                       display: 'block',
                       color: '#46c737'
                     })
+                   // router.push('/users')
                   }
                   setLoading(false);
   
@@ -134,7 +128,6 @@ const EditUser = ({params})=>{
          userid : params.user,
          name : res.data[0]['name'],
          email : res.data[0]['email'],
-         type : res.data[0]['type'],
          status : res.data[0]['status']
        })
        setLoading(false);
@@ -206,7 +199,7 @@ const EditUser = ({params})=>{
                                             <input type='text' placeholder='Email*'  onChange={inputChangeData} name="email" value={inputData.email} readOnly/>
                                         </div>
                                     </div>                                   
-                                    <div className='col-md-6'>
+                                    {/* <div className='col-md-6'>
                                         <div className='form-group'>
                                             <level>Role*</level>
                                             <select onChange={inputChangeData} name="type">
@@ -215,9 +208,9 @@ const EditUser = ({params})=>{
                                                 <option value="User">User</option>
                                                 <option value="Manager">Manager</option>
                                             </select>
-                                            {/* <input type='text' placeholder='Role*'/> */}
+                                            <input type='text' placeholder='Role*'/>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     <div className='col-md-6'>
                                         <div className='form-group'>
                                             <level>Status*</level>

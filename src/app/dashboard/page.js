@@ -597,7 +597,7 @@ const Dashboard=()=>{
                                           {/* { userType && userType=='admin' &&
                                             <td><input type="checkbox" onChange={handleChange} value={lead.id}/></td>
                                           } */}
-                                          <td>{l+1}</td>
+                                          <td>{lead.id}</td>
                                             <td>{lead.activity}</td>
                                             <td>{lead.industry}</td>
                                             <td><a href={'#'} onClick={()=>{openExternalLink(lead.url)}}>{lead.url}</a></td>

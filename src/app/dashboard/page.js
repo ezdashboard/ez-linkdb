@@ -148,7 +148,15 @@ const Dashboard=()=>{
     const [msg, setMsg] = useState('');
     const [msgType, setMsgType] = useState('')
     const [modalShow, setModalShow] = useState(false);
+    const openExternalLink = (url) => {
+      
+     let  tempUrl = url;
+     if(tempUrl.substr(0, 4) != 'http'){
+      tempUrl = 'http://'+tempUrl;
+     }
 
+      window.open(tempUrl, "_blank");
+    };
     const inputChangeData =(event)=> {
       setModalShow(false)
     const {name, value} = event.target;
@@ -592,10 +600,10 @@ const Dashboard=()=>{
                                           <td>{l+1}</td>
                                             <td>{lead.activity}</td>
                                             <td>{lead.industry}</td>
-                                            <td><a href={lead.url} target='_blank'>{lead.url}</a></td>
+                                            <td><a href={'#'} onClick={()=>{openExternalLink(lead.url)}}>{lead.url}</a></td>
                                             <td>{lead.da}</td>
                                             <td>{lead.spam_score}</td>
-                                            <td><a href={lead.live_links} target='_blank'>{lead.live_links}</a></td>
+                                            <td onClick={()=>{openExternalLink(lead.live_links)}}><a href={'#'}>{lead.live_links}</a></td>
                                             <td>{lead.follow}</td>
                                             
                                             

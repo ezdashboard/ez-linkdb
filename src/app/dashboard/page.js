@@ -563,24 +563,25 @@ const Dashboard=()=>{
                                   </div>           
                             </div>
                             </div>}
-                              <div className='lms-table-wrap'>
+                              <div className='lms-table-wrap-2'>
                                <Table striped bordered hover >
                                 <thead>
                                     <tr>
                                     {/* { userType && userType=='admin' && 
                                      <th></th>} */}
-                                    <th>Activities</th>
-                                    <th>Industry</th>
-                                    <th>URLs</th>
-                                    <th>DA</th>
-                                    <th>Spam Score</th>
-                                    <th>Live Links</th>
-                                    <th>Follow</th>
+                                     <th width="5%">S.No.</th>
+                                    <th width="10%">Activities</th>
+                                    <th width="10%">Industry</th>
+                                    <th width="15%">URLs</th>
+                                    <th width="5%">DA</th>
+                                    <th width="5%">Spam Score</th>
+                                    <th width="20%">Live Links</th>
+                                    <th width="10%">Follow</th>
                                    
                                     {   userType && userType=='admin' &&
                                      <>
-                                     <th>Status</th>
-                                     <th>Action</th>
+                                     <th width="10%">Status</th>
+                                     <th width="10%">Action</th>
                                    </> 
                                     }
                                     </tr>
@@ -594,22 +595,24 @@ const Dashboard=()=>{
                                           {/* { userType && userType=='admin' &&
                                             <td><input type="checkbox" onChange={handleChange} value={lead.id}/></td>
                                           } */}
+                                          <td>{l+1}</td>
                                             <td>{lead.activity}</td>
                                             <td>{lead.industry}</td>
-                                            <td>{lead.url}</td>
+                                            <td><a href={lead.url} target='_blank'>{lead.url}</a></td>
                                             <td>{lead.da}</td>
                                             <td>{lead.spam_score}</td>
-                                            <td>{lead.live_links}</td>
+                                            <td><a href={lead.live_links} target='_blank'>{lead.live_links}</a></td>
                                             <td>{lead.follow}</td>
                                             
                                             
                                          { userType && userType=='admin' &&
                                          <>
                                           <td>{lead.status}</td>
-                                            <td><a href={'#'} onClick={()=>{
+                                            <td><a href={'#'} style={{color:'black',padding: '5px'}} onClick={()=>{
                                     getPage('/dashboard/'+lead.id)
-                                }}><FontAwesomeIcon icon={faPenToSquare} /></a> 
-                              <a href={'#'} onClick={()=>{
+                                }}><FontAwesomeIcon icon={faPenToSquare} /></a>
+
+                              <a href={'#'} style={{color:'black'}} onClick={()=>{
                                 openModal(lead.id)
                             }}><FontAwesomeIcon icon={faTrashCan} /></a></td>
                                          </>

@@ -10,12 +10,15 @@ const Logout = ()=>{
     localStorage.clear();
     router.push("/")
 }
+const currentYear = new Date().getFullYear();
+
 useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
        let localType = localStorage.getItem('type');
        if(localType){
         setUserType(localType)
        }  
+       
     }
  
     }, []);
@@ -43,7 +46,7 @@ return(
                         <Link href="#"><FontAwesomeIcon icon={faArrowRightFromBracket} /><span className="links_name">Log out</span></Link>
                     </div>
                     <div className="sidebar__copyright">
-                    <p> © 2023 EZ Rankings Pvt. Ltd. <br />All Rights Reserved.</p>
+                    <p> © {currentYear} EZ Rankings Pvt. Ltd. <br />All Rights Reserved.</p>
                     </div>
                     </div>
                 </div>

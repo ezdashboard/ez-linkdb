@@ -143,43 +143,43 @@ const Addmore=()=>{
         setFormStatus("Please select Activities Type.")
         setModalShow(true)
         setMsgType('error')
-      }else if(!inputData.industry){
-         setFormStatus("Please select Industry.")
-         setModalShow(true)
-         setMsgType('error')     
-      }else if(!inputData.country){
-         setFormStatus("Please select country.")
-         setModalShow(true)
-         setMsgType('error')                 
+      // }else if(!inputData.industry){
+      //    setFormStatus("Please select Industry.")
+      //    setModalShow(true)
+      //    setMsgType('error')     
+      // }else if(!inputData.country){
+      //    setFormStatus("Please select country.")
+      //    setModalShow(true)
+      //    setMsgType('error')                 
       }else if(!inputData.url){
         setFormStatus("URLs can not be blank.")
         setModalShow(true)
         setMsgType('error')   
-      }else if(!inputData.da){
-         setFormStatus("DA can not be blank.")
-         setModalShow(true)
-         setMsgType('error')  
-      }else if(!inputData.spam_score){
-         setFormStatus("Spam Score can not be blank.")
-         setModalShow(true)
-         setMsgType('error')   
+      // }else if(!inputData.da){
+      //    setFormStatus("DA can not be blank.")
+      //    setModalShow(true)
+      //    setMsgType('error')  
+      // }else if(!inputData.spam_score){
+      //    setFormStatus("Spam Score can not be blank.")
+      //    setModalShow(true)
+      //    setMsgType('error')   
 
-      }else if(!inputData.live_links){
-         setFormStatus("Live Links can not be blank.")
-         setModalShow(true)
-         setMsgType('error')   
-      }else if(!inputData.follow){
-         setFormStatus("Please select follow.")
-         setModalShow(true)
-         setMsgType('error')
-      }else if(!inputData.status){
-         setFormStatus("Please select status.")
-         setModalShow(true)
-         setMsgType('error')
-      }else if(!inputData.indexing_status){
-         setFormStatus("Please select indexing status.")
-         setModalShow(true)
-         setMsgType('error')                                                                         
+      // }else if(!inputData.live_links){
+      //    setFormStatus("Live Links can not be blank.")
+      //    setModalShow(true)
+      //    setMsgType('error')   
+      // }else if(!inputData.follow){
+      //    setFormStatus("Please select follow.")
+      //    setModalShow(true)
+      //    setMsgType('error')
+      // }else if(!inputData.status){
+      //    setFormStatus("Please select status.")
+      //    setModalShow(true)
+      //    setMsgType('error')
+      // }else if(!inputData.indexing_status){
+      //    setFormStatus("Please select indexing status.")
+      //    setModalShow(true)
+      //    setMsgType('error')                                                                         
       }else{
         inputData.userid = userid ? userid : '';
         inputData.updatedBy =  userid ? userid : '' 
@@ -303,7 +303,7 @@ const Addmore=()=>{
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Industry*</level>
+                                         <level>Industry</level>
                                          <select name="industry"  onChange={inputChangeData} >
                                          <option value="">Select</option>
                                           {serviceStoreData && serviceStoreData.length > 0 && serviceStoreData.map((serv,s)=>{
@@ -316,9 +316,10 @@ const Addmore=()=>{
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Country*</level>
+                                         <level>Country</level>
                                          <select name="country"  onChange={inputChangeData}>
                                                 <option value="">Select</option>
+                                                <option value="All">All</option>
                                           {countryList && countryList.length > 0 && countryList.map((coun,c)=>{
                                              return(
                                                 <option value={coun.name} key={c}>{coun.name}</option>
@@ -335,26 +336,26 @@ const Addmore=()=>{
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>DA*</level>
+                                         <level>DA</level>
                                          <input type='text' placeholder='DA' name="da" onChange={inputChangeData} value={inputData.da}/>
                                       </div>
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Spam Score*</level>
+                                         <level>Spam Score</level>
                                          <input type='text' placeholder='Spam Score*' name="spam_score" onChange={inputChangeData} value={inputData.spam_score}/>
                                       </div>
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Live Links*</level>
+                                         <level>Live Links</level>
                                          <input type='text' placeholder='Live Links' name="live_links" onChange={inputChangeData} value={inputData.live_links}/>
                                       </div>
                                    </div>                                   
                                   
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Follow*</level>
+                                         <level>Follow</level>
                                          <select name="follow"  onChange={inputChangeData} >
                                             <option value="">Select</option>
                                             <option value="Dofollow">Dofollow</option>
@@ -364,17 +365,19 @@ const Addmore=()=>{
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Status*</level>
+                                         <level>Status</level>
                                          <select name="status"  onChange={inputChangeData} >
                                             <option value="">Select</option>
                                             <option value="Active">Active</option>
                                             <option value="Not Working">Not Working</option>
+                                            <option value="Re Confirm">Re Confirm</option>
+
                                          </select>
                                       </div>
                                    </div>
                                    <div className='col-md-6'>
                                       <div className='form-group'>
-                                         <level>Indexing Status*</level>
+                                         <level>Indexing Status</level>
                                          <select name="indexing_status"  onChange={inputChangeData} >
                                             <option value="">Select</option>
                                             <option value="Yes">Yes</option>

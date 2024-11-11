@@ -78,6 +78,7 @@ const Dashboard=()=>{
               let idn = 0;
               // setDelt()
               alert(res.data.msg);
+              getLeadsData('normal')
               // setMsg(res.data.msg);
               // setMsgType('success')
               // setModalShow(true)
@@ -465,13 +466,7 @@ const Dashboard=()=>{
                             />
                         }
                             <div className='email-serach-box'>
-                              <form  className="serach d-none">
-                               
-                                <input type="text" placeholder="Email"  onChange={inputChangeData} name="search" value={inputData.search}/>
-                                <button type="button" onClick={()=>{
-                                    getLeadsData('search')
-                                }}>Search</button>
-                                </form>
+                              
                                 { userType && userType=='admin' &&  
                                 <div className='add-more'>
                                  <a href='#' onClick={()=>{
@@ -485,9 +480,10 @@ const Dashboard=()=>{
                               <div className="">
                               <div className=''>
                                 
-                                <strong>Search:</strong>
+                                
                                 <div className='row'>
-                                   <div className='col-md-2'>
+                                <strong>Search:</strong>
+                                   <div className='col-md-3'>
                                       <div className='form-group'>
                                         <level>Activities Type</level>
                                         <select name="activity"  onChange={inputSearchData} className='form-control'>
@@ -500,7 +496,7 @@ const Dashboard=()=>{
                                         </select>
                                       </div>
                                     </div>
-                                    <div className='col-md-2'>
+                                    <div className='col-md-3'>
                                       <div className='form-group'>
                                          <level>Industry</level>
                                          <select name="industry"  onChange={inputSearchData} className='form-control'>
@@ -513,7 +509,7 @@ const Dashboard=()=>{
                                          </select>   
                                       </div>
                                     </div>
-                                   <div className='col-md-2'>
+                                   <div className='col-md-3'>
                                       <div className='form-group'>
                                          <level>Follow</level>
                                          <select name="follow"  onChange={inputSearchData} className='form-control'>
@@ -523,44 +519,42 @@ const Dashboard=()=>{
                                          </select>
                                       </div>
                                    </div>
-                                   <div className='col-md-2'>
-                                      <div className='form-group'>
-                                         <level>Sorting</level>
-                                         <select name="sorting"  onChange={inputSearchData} className='form-control'>
-                                            <option value="">Select</option>
-                                            <option value="1">Industry By Asc</option>
-                                            <option value="2">Industry By Desc</option>
-                                            <option value="3">DA By Asc</option>
-                                            <option value="4">DA By Desc</option>
-                                            <option value="5">Scam Score By Asc</option>
-                                            <option value="6">Scam Score By Desc</option>
-                                            <option value="7">Follow By Asc</option>
-                                            <option value="8">Follow By Desc</option>
-                                         </select>
-                                      </div>
-                                   </div>
-                                   <div className='col-md-4'>
+                                  
+                                   <div className='col-md-3'>
                                       <div className='form-group two-btn' style={{marginTop:'20px'}}>
                                          <button type="button" onClick={()=>getLeadsData('search')} className='btn btn-primary'>Search</button>
                                       </div>
                                    </div>
                                 </div>
+                              {(searData.activity || searData.follow || searData.industry) && 
+                                <div className='row'>
+                                  <div className='col-md-9'>
+                                        <div className='form-group'>
+                                          <strong>Sorting:</strong>
+                                          <select name="sorting"  onChange={inputSearchData} className='form-control'>
+                                              <option value="">Select</option>
+                                              <option value="1">Industry By Asc</option>
+                                              <option value="2">Industry By Desc</option>
+                                              <option value="3">DA By Asc</option>
+                                              <option value="4">DA By Desc</option>
+                                              <option value="5">Scam Score By Asc</option>
+                                              <option value="6">Scam Score By Desc</option>
+                                              <option value="7">Follow By Asc</option>
+                                              <option value="8">Follow By Desc</option>
+                                          </select>
+                                        </div>
+                                  </div>
+                                  <div className='col-md-3'>
+                                    <div className='form-group two-btn' style={{marginTop:'20px'}}>
+                                        <button type="button" onClick={()=>getLeadsData('search')} className='btn btn-primary'>Sorting</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                }
                                
-                                <button onClick={getSearchData} className="d-none"> Download Excel</button>
-                                {/* {sData && sData.length > 0 &&
-                                  <ExcelDownloadButton data={sData} fileName="records"/>} */}
+                                
                               </div>
-                              <div className='two-btn d-none'>
-                                <button type='button'  className = "btn btn-primary" onClick={()=>{
-                                                                statusUpdate('2')
-                                                            }}>Disable</button>
-                                                        
-                                 <button type='button' className = "btn btn-primary" onClick={()=>{
-                                                                statusUpdate('1')
-                                                            }}>Enable</button>
-
-                              
-                                  </div>           
+                                        
                             </div>
                             </div>}
                               <div className='lms-table-wrap-2'>

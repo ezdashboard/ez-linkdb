@@ -108,43 +108,43 @@ const EditUser = ({params})=>{
      setFormStatus("Please select Activities Type.")
      setModalShow(true)
      setMsgType('error')
-   }else if(!inputData.industry){
-      setFormStatus("Please select Industry.")
-      setModalShow(true)
-      setMsgType('error')     
-   }else if(!inputData.country){
-      setFormStatus("Please select country.")
-      setModalShow(true)
-      setMsgType('error')                 
+   // }else if(!inputData.industry){
+   //    setFormStatus("Please select Industry.")
+   //    setModalShow(true)
+   //    setMsgType('error')     
+   // }else if(!inputData.country){
+   //    setFormStatus("Please select country.")
+   //    setModalShow(true)
+   //    setMsgType('error')                 
    }else if(!inputData.url){
      setFormStatus("URLs can not be blank.")
      setModalShow(true)
      setMsgType('error')   
-   }else if(!inputData.da){
-      setFormStatus("DA can not be blank.")
-      setModalShow(true)
-      setMsgType('error')  
-   }else if(!inputData.spam_score){
-      setFormStatus("Spam Score can not be blank.")
-      setModalShow(true)
-      setMsgType('error')   
+   // }else if(!inputData.da){
+   //    setFormStatus("DA can not be blank.")
+   //    setModalShow(true)
+   //    setMsgType('error')  
+   // }else if(!inputData.spam_score){
+   //    setFormStatus("Spam Score can not be blank.")
+   //    setModalShow(true)
+   //    setMsgType('error')   
 
-   }else if(!inputData.live_links){
-      setFormStatus("Live Links can not be blank.")
-      setModalShow(true)
-      setMsgType('error')   
-   }else if(!inputData.follow){
-      setFormStatus("Please select follow.")
-      setModalShow(true)
-      setMsgType('error')
-   }else if(!inputData.status){
-      setFormStatus("Please select status.")
-      setModalShow(true)
-      setMsgType('error')
-   }else if(!inputData.indexing_status){
-      setFormStatus("Please select indexing status.")
-      setModalShow(true)
-      setMsgType('error')                                                                         
+   // }else if(!inputData.live_links){
+   //    setFormStatus("Live Links can not be blank.")
+   //    setModalShow(true)
+   //    setMsgType('error')   
+   // }else if(!inputData.follow){
+   //    setFormStatus("Please select follow.")
+   //    setModalShow(true)
+   //    setMsgType('error')
+   // }else if(!inputData.status){
+   //    setFormStatus("Please select status.")
+   //    setModalShow(true)
+   //    setMsgType('error')
+   // }else if(!inputData.indexing_status){
+   //    setFormStatus("Please select indexing status.")
+   //    setModalShow(true)
+   //    setMsgType('error')                                                                         
    }else{
      inputData.userid = userid ? userid : '';
      inputData.updatedBy =  userid ? userid : '' 
@@ -187,6 +187,8 @@ const EditUser = ({params})=>{
                   display: 'block',
                   color: '#46c737'
                   })
+               //   Router.push('/dashboard')
+
                }
 
    })
@@ -285,7 +287,7 @@ const EditUser = ({params})=>{
                                         <div className="breadcrumb__menu">
                                             <nav>
                                                 <ul>
-                                                    <li><span><a href="#">Home</a></span></li>
+                                                    <li><span><a href="/dasboard">Home</a></span></li>
                                                     <li className="active"><span>Edit Dashboard</span></li>
                                                 </ul>
                                             </nav>
@@ -315,7 +317,7 @@ const EditUser = ({params})=>{
                                  </div>
                                  <div className='col-md-6'>
                                     <div className='form-group'>
-                                       <level>Industry*</level>
+                                       <level>Industry</level>
                                        <select name="industry"  onChange={inputChangeData} value={inputData.industry}>
                                        <option value="">Select</option>
                                           {serviceStoreData && serviceStoreData.length > 0 && serviceStoreData.map((serv,s)=>{
@@ -328,9 +330,10 @@ const EditUser = ({params})=>{
                                  </div>
                                  <div className='col-md-6'>
                                     <div className='form-group'>
-                                       <level>Country*</level>
+                                       <level>Country</level>
                                        <select name="country"  onChange={inputChangeData} value={inputData.country}>
                                           <option value="">Select</option>
+                                          <option value="All">All</option>
                                           {countryList && countryList.length > 0 && countryList.map((coun,c)=>{
                                              return(
                                                 <option value={coun.name} key={c}>{coun.name}</option>
@@ -347,26 +350,26 @@ const EditUser = ({params})=>{
                                  </div>
                                  <div className='col-md-6'>
                                     <div className='form-group'>
-                                       <level>DA*</level>
+                                       <level>DA</level>
                                        <input type='text' placeholder='DA' name="da" onChange={inputChangeData} value={inputData.da}/>
                                     </div>
                                  </div>
                                  <div className='col-md-6'>
                                     <div className='form-group'>
-                                       <level>Spam Score*</level>
+                                       <level>Spam Score</level>
                                        <input type='text' placeholder='Spam Score*' name="spam_score" onChange={inputChangeData} value={inputData.spam_score}/>
                                     </div>
                                  </div>
                                  <div className='col-md-6'>
                                     <div className='form-group'>
-                                       <level>Live Links*</level>
+                                       <level>Live Links</level>
                                        <input type='text' placeholder='Live Links' name="live_links" onChange={inputChangeData} value={inputData.live_links}/>
                                     </div>
                                  </div>                                   
                                  
                                  <div className='col-md-6'>
                                     <div className='form-group'>
-                                       <level>Follow*</level>
+                                       <level>Follow</level>
                                        <select name="follow"  onChange={inputChangeData} value={inputData.follow}>
                                           <option value="">Select</option>
                                           <option value="Dofollow">Dofollow</option>
@@ -376,21 +379,20 @@ const EditUser = ({params})=>{
                                  </div>
                                  <div className='col-md-6'>
                                     <div className='form-group'>
-                                       <level>Status*</level>
-                                       <select name="status"  onChange={inputChangeData} >
+                                       <level>Status</level>
+                                       <select name="status"  onChange={inputChangeData} value={inputData.status}>
                                           <option value="">Select</option>
-                                          <option value={inputData.status} selected>{inputData.status}</option>
                                           <option value="Active">Active</option>
                                           <option value="Not Working">Not Working</option>
+                                          <option value="Re Confirm">Re Confirm</option>
                                        </select>
                                     </div>
                                  </div>
                                  <div className='col-md-6'>
                                     <div className='form-group'>
-                                       <level>Indexing Status*</level>
-                                       <select name="indexing_status"  onChange={inputChangeData} >
+                                       <level>Indexing Status</level>
+                                       <select name="indexing_status"  onChange={inputChangeData} value={inputData.indexing_status}>
                                           <option value="">Select</option>
-                                          <option value={inputData.indexing_status} selected>{inputData.indexing_status}</option>
                                           <option value="Yes">Yes</option>
                                           <option value="No">No</option>
                                        </select>

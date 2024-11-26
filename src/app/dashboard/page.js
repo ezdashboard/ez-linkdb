@@ -143,8 +143,26 @@ const Dashboard=()=>{
       activity:'',
       industry:'',
       follow:'',
+      country:'',
       sorting:''
     })
+    const [countryList, setCountryList] = useState([]);
+    const getCountryData = async () => {
+      axios.get(`${process.env.API_BASE_URL}country.php`)
+         .then(res => {
+            const data = res.data.countryData.map((item) => {
+               return {
+                  id: item.id,
+                  name: item.name,
+                  status: item.status
+               }
+            }
+         )
+         setCountryList(data);
+      })
+      .catch(err => {
+         })
+   }
     const [msg, setMsg] = useState('');
     const [msgType, setMsgType] = useState('')
     const [modalShow, setModalShow] = useState(false);
@@ -266,7 +284,7 @@ const Dashboard=()=>{
             try {
               let apiDash = '';
               if(type && type=='search' ){
-                apiDash = `${process.env.API_BASE_URL}leads.php?limit=${limitp}&activity=${searData.activity}&industry=${searData.industry}&follow=${searData.follow}&sort=${searData.sorting}`;
+                apiDash = `${process.env.API_BASE_URL}leads.php?limit=${limitp}&activity=${searData.activity}&industry=${searData.industry}&follow=${searData.follow}&sort=${searData.sorting}&country=${searData.country}`;
               }else{
                 apiDash = `${process.env.API_BASE_URL}leads.php?page=${currentPage}&limit=${limitp}`;
               }
@@ -292,6 +310,7 @@ const Dashboard=()=>{
                     live_links:item.live_links,
                     spam_score: item.spam_score,
                     status:item.status,
+                    country:item.country,
                     industry:item.industry,
                     url:item.url
                     
@@ -428,6 +447,7 @@ const Dashboard=()=>{
                 getLeadsData('normal')
                 getActivityData()
                 getServiceData()
+                getCountryData() 
                }
                if(localType){
                 setUserType(localType)
@@ -504,7 +524,7 @@ const Dashboard=()=>{
                                         </select>
                                       </div>
                                     </div>
-                                    <div className='col-md-3'>
+                                    <div className='col-md-2'>
                                       <div className='form-group'>
                                          <level>Industry</level>
                                          <select name="industry"  onChange={inputSearchData} className='form-control'>
@@ -517,7 +537,22 @@ const Dashboard=()=>{
                                          </select>   
                                       </div>
                                     </div>
-                                   <div className='col-md-3'>
+                                    <div className='col-md-2'>
+                                      <div className='form-group'>
+                                         <level>Country</level>
+                                         <select name="country"  onChange={inputSearchData} className='form-control'>
+                                          <option value="">Select</option>
+                                          <option value={'Global'}>{'Global'}</option>
+
+                                            {countryList && countryList.length > 0 && countryList.map((coun,s)=>{
+                                              return(
+                                                  <option value={coun.name} key={s}>{coun.name}</option>
+                                              )
+                                            })}
+                                         </select>   
+                                      </div>
+                                    </div>
+                                   <div className='col-md-2'>
                                       <div className='form-group'>
                                          <level>Follow</level>
                                          <select name="follow"  onChange={inputSearchData} className='form-control'>
@@ -574,6 +609,7 @@ const Dashboard=()=>{
                                      <th width="5%">S.No.</th>
                                     <th width="10%">Activities</th>
                                     <th width="10%">Industry</th>
+                                    <th width="10%">Country</th>
                                     <th width="15%">URLs</th>
                                     <th width="5%">DA</th>
                                     <th width="5%">Spam Score</th>
@@ -600,6 +636,7 @@ const Dashboard=()=>{
                                           <td>{lead.id}</td>
                                             <td>{lead.activity}</td>
                                             <td>{lead.industry}</td>
+                                            <td>{lead.country}</td>
                                             <td><a href={'#'} onClick={()=>{openExternalLink(lead.url)}}>{lead.url}</a></td>
                                             <td>{lead.da}</td>
                                             <td>{lead.spam_score}</td>

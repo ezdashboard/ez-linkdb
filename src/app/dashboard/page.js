@@ -284,9 +284,9 @@ const Dashboard=()=>{
             try {
               let apiDash = '';
               if(type && type=='search' ){
-                apiDash = `${process.env.API_BASE_URL}leads.php?limit=${limitp}&activity=${searData.activity}&industry=${searData.industry}&follow=${searData.follow}&sort=${searData.sorting}&country=${searData.country}`;
+                apiDash = `${process.env.API_BASE_URL}leads.php?page=${currentPage}&limit=${limitp}&activity=${searData.activity}&industry=${searData.industry}&follow=${searData.follow}&sort=${searData.sorting}&country=${searData.country}`;
               }else{
-                apiDash = `${process.env.API_BASE_URL}leads.php?page=${currentPage}&limit=${limitp}`;
+                apiDash = `${process.env.API_BASE_URL}leads.php?page=${currentPage}&limit=${limitp}&activity=${searData.activity}&industry=${searData.industry}&follow=${searData.follow}&sort=${searData.sorting}&country=${searData.country}`;
               }
                 const config = {
                     headers: {
